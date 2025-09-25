@@ -1,90 +1,94 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- * @lint-ignore-every XPLATJSCOPYRIGHT1
- */
-
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View, Image} from 'react-native';
-import { createBottomTabNavigator, createAppContainer } from 'react-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'react-native';
+import { StatusBar } from 'expo-status-bar';
 import Explore from './screens/Explore';
 import Saved from './screens/Saved';
 import Trips from './screens/Trips';
 import Inbox from './screens/Inbox';
 import Profile from './screens/Profile';
 
-const BottomNavigator = createBottomTabNavigator({
-  Explpore: {
-    screen: Explore,
-    navigationOptions: {
-      tabBarLabel: 'EXPLORE',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="search-outline" color={tintColor} size={24}/>
-      )
-    }
-  },
-  Saved: {
-    screen: Saved,
-    navigationOptions: {
-      tabBarLabel: 'SAVED',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="heart-outline" color={tintColor} size={24}/>
-      )
-    }
-  },
-  Trips: {
-    screen: Trips,
-    navigationOptions: {
-      tabBarLabel: 'TRIPS',
-      tabBarIcon: ({ tintColor }) => (
-        <Image source={require('./assets/airbnb.png')} style={{ height: 24, width: 24, tintColor: tintColor }} />
-      )
-    }
-  },
-  Inbox: {
-    screen: Inbox,
-    navigationOptions: {
-      tabBarLabel: 'INBOX',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="comment" color={tintColor} size={24}/>
-      )
-    }
-  },
-  Profile: {
-    screen: Profile,
-    navigationOptions: {
-      tabBarLabel: 'PROFILE',
-      tabBarIcon: ({ tintColor }) => (
-        <Icon name="ios-person-outline" color={tintColor} size={24}/>
-      )
-    }
-  }
-}, {
-  tabBarOptions: {
-    activeTintColor: 'red',
-    inactiveTintColor: 'grey',
-    style: {
-      backgroundColor: 'white',
-      borderTopWidth: 0,
-      shadowOffset: { width: 5, height: 3 },
-      shadowColor: 'black',
-      shadowOpacity: 0.5,
-      elevation: 5
-    }
-  }
-})
+const Tab = createBottomTabNavigator();
 
-export default createAppContainer(BottomNavigator);
+export default function App() {
+  return (
+    <NavigationContainer>
+      <StatusBar style="auto" />
+      <Tab.Navigator
+        screenOptions={{
+          tabBarActiveTintColor: 'red',
+          tabBarInactiveTintColor: 'grey',
+          tabBarStyle: {
+            backgroundColor: 'white',
+            borderTopWidth: 0,
+            shadowOffset: { width: 5, height: 3 },
+            shadowColor: 'black',
+            shadowOpacity: 0.5,
+            elevation: 5
+          }
+        }}
+      >
+        <Tab.Screen
+          name="Explore"
+          component={Explore}
+          options={{
+            tabBarLabel: 'EXPLORE',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="search-outline" color={color} size={size} />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Saved"
+          component={Saved}
+          options={{
+            tabBarLabel: 'SAVED',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="heart-outline" color={color} size={size} />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Trips"
+          component={Trips}
+          options={{
+            tabBarLabel: 'TRIPS',
+            tabBarIcon: ({ color, size }) => (
+              <Image
+                source={require('./assets/airbnb.png')}
+                style={{
+                  height: size,
+                  width: size,
+                  tintColor: color
+                }}
+              />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Inbox"
+          component={Inbox}
+          options={{
+            tabBarLabel: 'INBOX',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="chatbubble-outline" color={color} size={size} />
+            )
+          }}
+        />
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarLabel: 'PROFILE',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="person-outline" color={color} size={size} />
+            )
+          }}
+        />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
